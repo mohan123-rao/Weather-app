@@ -4,11 +4,11 @@ import axios from 'axios'
 const Home = () => {
   const [city, setCity] = useState("")
   const [weatherData, setWeatherData] = useState(null)
-  const [loading, setLoading] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const getWeather = async (e) => {
     e.preventDefault()
-    setLoading("Loading...")
+    setLoading(true)
     try {
       const res = await axios.post("https://weather-app-backend-1-khlx.onrender.com/getWeather", { city })
       setWeatherData(res.data)
@@ -17,6 +17,7 @@ const Home = () => {
       console.error(error)
       alert("Failed to fetch weather")
     }
+    setLoading(false)
   }
 
   // Background color logic
@@ -66,9 +67,12 @@ const Home = () => {
           <h4>💧 Humidity: {weatherData.main?.humidity}%</h4>
           <h4>🔽 Pressure: {weatherData.main?.pressure} hPa</h4>
         </div>
-      ):(
-        <h1>{loading}</h1>
       )}
+<div>
+            {loading && (
+              <p>Loading....</p>
+            )}
+</div>
     </div>
   )
 }
